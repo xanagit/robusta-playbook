@@ -2,15 +2,17 @@ from robusta.api import *
 
 
 @action
-def iris_custom_action(event: PodEvent):
+def iris_custom_action(event: AlertManagerEvent):
     # we have full access to the pod on which the alert fired
-    pod = event.get_pod()
-    pod_name = pod.metadata.name
-    pod_logs = pod.get_logs()
-    pod_processes = pod.exec("ps aux")
+    # pod = event.get_pod()
+
+    # pod_name = pod.metadata.name
+    # pod_logs = pod.get_logs()
+    # pod_processes = pod.exec("ps aux")
 
     # this is how you send data to slack or other destinations
     event.add_enrichment([
-        MarkdownBlock("*Oh no!* An alert occurred on " + pod_name),
-        FileBlock("crashing-pod.log", pod_logs)
+        MarkdownBlock("*Une erreur est survenue!* status: " +
+                      event.status + ", count: " + event.alerts.count()),
+        FileBlock("crashing-pod.log", event.json)
     ])
