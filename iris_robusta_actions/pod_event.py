@@ -1,7 +1,7 @@
 from robusta.api import *
 
 
-class CallbackParams():
+class CallbackParams(ActionParams):
     title: str
 
 
@@ -20,16 +20,28 @@ def iris_custom_callback(event: ExecutionBaseEvent, params: CallbackParams):
 @action
 def iris_custom_action(alert: PrometheusKubernetesAlert):
     # pod = event.get_pod()
-    alert_name = alert.alert.labels.get("alertname", "")
+    alert_name = None if alert.alert is None else alert.alert.labels.get(
+        "alertname", "")
     if not alert_name:
         return
-
-    alert.add_enrichment([
-        HeaderBlock("IRIS Custom Paybook action"),
-        MarkdownBlock("*Une erreur est survenue!*"),
-        DividerBlock(),
-        FileBlock("crashing-pod.log", str.encode("test de fichier de log"))
-    ])
+    else:
+        alert.add_enrichment([
+            HeaderBlock("IRIS Custom Paybook action"),
+            MarkdownBlock("*Une erreur est survenue!*"),
+            CallbackBlock(
+                {
+                    f'Call IRIS Custom Callback': CallbackChoice(
+                        action=iris_custom_callback,
+                        action_params=CallbackParams(
+                            title=alert_name
+                        ),
+                        kubernetes_object=None
+                    )
+                },
+            ),
+            DividerBlock(),
+            FileBlock("crashing-pod.log", str.encode("test de fichier de log"))
+        ])
     # we have full access to the pod on which the alert fired
     # pod = event.get_pod()
 
