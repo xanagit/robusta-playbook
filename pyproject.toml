@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "playbook-test"
+name = "iris_robusta_actions"
 version = "0.1.0"
 description = ""
 authors = ["Damien RIDEREAU <damien.ridereau@systeme-u.fr>"]
