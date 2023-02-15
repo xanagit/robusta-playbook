@@ -2,7 +2,7 @@ from robusta.api import *
 
 
 @action
-def iris_custom_action(event: PodEvent):
+def iris_custom_action(event: ExecutionBaseEvent):
     # pod = event.get_pod()
     event.add_enrichment([
         MarkdownBlock("*Une erreur est survenue!*"),
