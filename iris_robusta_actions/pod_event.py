@@ -3,9 +3,9 @@ from robusta.api import *
 
 @action
 def iris_custom_action(event: PodEvent):
-    pod = event.get_pod()
+    # pod = event.get_pod()
     event.add_enrichment([
-        MarkdownBlock("*Une erreur est survenue!* status: " + pod),
+        MarkdownBlock("*Une erreur est survenue!*"),
         FileBlock("crashing-pod.log", "test de fichier de log")
     ])
     # we have full access to the pod on which the alert fired
