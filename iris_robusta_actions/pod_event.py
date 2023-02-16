@@ -5,6 +5,18 @@ class CallbackParams(ActionParams):
     title: str
 
 
+alertMsgMarkdown: str = """
+Source: `tec-k8s-s-gke-europe-west1-cluster-a`
+
+:gyrophare: Alerte : une alerte est survenue. Ceci est une description de l'alerte.
+Liens :
+- (Ouvrir OASIS)[https://gieirisprod.service-now.com/]
+- (Ouvrir le Grafana associé)[https://gieirisprod.service-now.com/]
+- (Ouvrir dans Argo CD)[https://gieirisprod.service-now.com/]
+- (Documentation d'explication et de corrections possibles)[https://gieirisprod.service-now.com/]    
+"""
+
+
 @action
 def iris_custom_callback(event: ExecutionBaseEvent, params: CallbackParams):
     finding = Finding(
@@ -26,11 +38,10 @@ def iris_custom_action(alert: PrometheusKubernetesAlert):
         return
     else:
         alert.add_enrichment([
-            HeaderBlock("IRIS Custom Paybook action"),
-            MarkdownBlock("*Une erreur est survenue!*"),
+            HeaderBlock("titre : :feu: `firing` :grand_cercle_jaune: `medium` Une alerte Prometheus est survenue"),
             CallbackBlock(
                 {
-                    f'Call IRIS Custom Callback': CallbackChoice(
+                    f'Analyser dans Robusta :loupe_droite:': CallbackChoice(
                         action=iris_custom_callback,
                         action_params=CallbackParams(
                             title=alert_name
@@ -39,8 +50,20 @@ def iris_custom_action(alert: PrometheusKubernetesAlert):
                     )
                 },
             ),
+            CallbackBlock(
+                {
+                    f'Désactiver :notifications_désactivées:': CallbackChoice(
+                        action=iris_custom_callback,
+                        action_params=CallbackParams(
+                            title=alert_name
+                        ),
+                        kubernetes_object=None
+                    )
+                },
+            ),
+            MarkdownBlock(alertMsgMarkdown),
             DividerBlock(),
-            FileBlock("crashing-pod.log", str.encode("test de fichier de log"))
+            FileBlock("application.log", str.encode("test de fichier de log"))
         ])
     # we have full access to the pod on which the alert fired
     # pod = event.get_pod()
