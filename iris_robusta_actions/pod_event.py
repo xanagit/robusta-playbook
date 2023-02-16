@@ -8,7 +8,7 @@ class CallbackParams(ActionParams):
 alertMsgMarkdown: str = """
 Source: `tec-k8s-s-gke-europe-west1-cluster-a`
 
-:gyrophare: Alerte : une alerte est survenue. Ceci est une description de l'alerte.
+:alert: Alerte : une alerte est survenue. Ceci est une description de l'alerte.
 Liens :
 - [Ouvrir OASIS](https://gieirisprod.service-now.com/)
 - [Ouvrir le Grafana associé](https://gieirisprod.service-now.com/)
