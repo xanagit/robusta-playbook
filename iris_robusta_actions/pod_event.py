@@ -10,10 +10,10 @@ Source: `tec-k8s-s-gke-europe-west1-cluster-a`
 
 :gyrophare: Alerte : une alerte est survenue. Ceci est une description de l'alerte.
 Liens :
-- (Ouvrir OASIS)[https://gieirisprod.service-now.com/]
-- (Ouvrir le Grafana associé)[https://gieirisprod.service-now.com/]
-- (Ouvrir dans Argo CD)[https://gieirisprod.service-now.com/]
-- (Documentation d'explication et de corrections possibles)[https://gieirisprod.service-now.com/]    
+- [Ouvrir OASIS](https://gieirisprod.service-now.com/)
+- [Ouvrir le Grafana associé](https://gieirisprod.service-now.com/)
+- [Ouvrir dans Argo CD](https://gieirisprod.service-now.com/)
+- [Documentation d'explication et de corrections possibles](https://gieirisprod.service-now.com/)   
 """
 
 
@@ -38,7 +38,7 @@ def iris_custom_action(alert: PrometheusKubernetesAlert):
         return
     else:
         alert.add_enrichment([
-            HeaderBlock("titre : :feu: `firing` :grand_cercle_jaune: `medium` Une alerte Prometheus est survenue"),
+            HeaderBlock("titre : :fire: `firing` :histogram: `medium` Une alerte Prometheus est survenue"),
             CallbackBlock(
                 {
                     f'Analyser dans Robusta :loupe_droite:': CallbackChoice(
